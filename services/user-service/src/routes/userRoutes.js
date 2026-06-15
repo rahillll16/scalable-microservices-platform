@@ -3,7 +3,9 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const { 
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    getUserById
+
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -16,6 +18,8 @@ router.get(
     "/profile",
     authMiddleware,
     getProfile
-);
+); //
+
+router.get("/:id", getUserById); //Put it after specific routes like: otherwise /profile may be interpreted as an id.
 
 module.exports = router;

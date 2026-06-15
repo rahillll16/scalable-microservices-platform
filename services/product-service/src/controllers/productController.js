@@ -8,7 +8,7 @@ const createProduct = async (req, res) => {
 
         if(
             !name || 
-            ! description || 
+            !description || 
             price === undefined // as edge case for price == 0
         ){
             return res.status(400).json({

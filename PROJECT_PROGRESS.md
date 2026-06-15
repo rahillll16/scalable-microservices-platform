@@ -223,3 +223,170 @@ Frontend: Pending
 * Returning an empty array with HTTP 200 is preferred over returning 404 for empty collections.
 * Validating ObjectIds(size expected is 24) before database queries prevents Mongoose cast errors.
 * Using `findByIdAndUpdate()` with `{ new: true }` returns the updated document.
+
+
+
+# Day 4 Complete
+
+## Order Service
+
+### Features Implemented
+
+* MongoDB Integration
+* Order Schema
+* Create Order API
+* Get All Orders API
+* Get Order By ID API
+* Get Orders By User ID API
+
+---
+
+## Service-to-Service Communication
+
+Implemented communication between microservices using Axios.
+
+### Order Service Validation Flow
+
+Before creating an order:
+
+* Verify User exists via User Service
+* Verify Product exists via Product Service
+
+Flow:
+
+Order Service
+→ User Service Verification
+→ Product Service Verification
+→ Create Order
+
+---
+
+## API Gateway Integration
+
+Added Order Service routing through API Gateway.
+
+### Gateway Routes
+
+* /users → User Service
+* /products → Product Service
+* /orders → Order Service
+
+Implemented path rewriting to map gateway routes to internal service routes.
+
+---
+
+## Testing Completed
+
+### Create Order
+
+* Successful Order Creation
+* Missing Fields Validation
+* Quantity Validation
+* Invalid User Validation
+* Invalid Product Validation
+
+### Get Orders
+
+* Get All Orders
+* Get Order By ID
+* Get Orders By User ID
+
+### Edge Cases Handled
+
+* Invalid MongoDB ObjectId
+* Order Not Found
+* Empty Orders Collection
+* User With No Orders
+
+### Gateway Testing
+
+* GET requests through Gateway
+* POST requests through Gateway
+* Order Service Routing Verification
+
+---
+
+## Challenges Faced & Solutions
+
+### 1. Service Communication Failure
+
+Problem:
+
+Axios requests failed with:
+
+ECONNREFUSED
+
+Cause:
+
+Target service was not running.
+
+Solution:
+
+Verified service health and confirmed correct ports before testing.
+
+---
+
+### 2. API Gateway Route Mapping
+
+Problem:
+
+Gateway returned:
+
+Cannot GET /
+
+Cause:
+
+Gateway route paths and service route prefixes were not aligned.
+
+Solution:
+
+Implemented proper path rewriting for service routes.
+
+---
+
+### 3. POST Requests Hanging Through Gateway
+
+Problem:
+
+POST requests buffered indefinitely through the gateway.
+
+Cause:
+
+Gateway was using express.json() while acting purely as a reverse proxy.
+
+Solution:
+
+Removed express.json() from the API Gateway and allowed downstream services to parse request bodies.
+
+---
+
+## Key Learnings
+
+* Service-to-Service Communication using Axios
+* HTTP Communication Between Microservices
+* Error Propagation Across Services
+* API Gateway Routing
+* Path Rewriting
+* Reverse Proxy Architecture
+* Debugging ECONNREFUSED Errors
+* Request Flow Through Distributed Systems
+* Validation Before Data Persistence
+
+---
+
+## Current Status
+
+User Service: Complete ✅
+
+Product Service: Complete ✅
+
+Order Service: Complete ✅
+
+API Gateway: Complete ✅
+
+Redis Integration: Pending
+
+Dockerization: Pending
+
+Frontend: Pending
+

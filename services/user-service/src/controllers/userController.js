@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 //LOGIN
 const loginUser = async (req,res) => {
@@ -129,8 +130,47 @@ const getProfile = async (req, res) => {
     }
 };
 
+// GET USER BY ID
+const getUserById = async (req, res) => {
+    // console.log("GET PROFILE HIT");
+
+    try {
+        
+        const { id } = req.params;
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid User ID"
+            });
+        }
+
+        const user = await User.findById(id).select("-password");
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message: "User Not Found"
+            });
+        }
+
+        return res.status(200).json({
+            success: false,
+            user
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
-    getProfile
+    getProfile,
+    getUserById
 };
