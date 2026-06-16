@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 const mongoose = require("mongoose"); //for checking ObjectId Validation
+const { redisClient } = require("../config/redis");
 
 // CREATE
 const createProduct = async (req, res) => {
@@ -30,6 +31,10 @@ const createProduct = async (req, res) => {
             price
         });
 
+        //ALL PRODUCTS(LIST stored in redis as it is not containing this product) CACHE INVALIDATED
+        await redisClient.del("products");
+        console.log("ALL PRODUCTS CACHE INVALIDATED");
+
         res.status(201).json({
             success: true,
             product
@@ -45,8 +50,36 @@ const createProduct = async (req, res) => {
 
 //GET PRODUCTS
 const getAllProducts = async (req, res) => {
+
     try {
+
+        const cachedProducts = await redisClient.get("products");
+
+        if(cachedProducts){
+
+            console.log("ALL PRODUCTS CACHE HIT");
+
+            const products = JSON.parse(cachedProducts);
+
+            return res.status(200).json({
+                success: true,
+                count: products.length,
+                products
+            });
+
+        }
+
+        console.log("ALL PRODUCTS CACHE MISS");
+
         const products = await Product.find();
+
+        await redisClient.set(
+            "products",
+            JSON.stringify(products),
+            {
+                EX: 100
+            }
+        );
 
         res.status(200).json({
             success: true,
@@ -66,17 +99,33 @@ const getAllProducts = async (req, res) => {
 //GET PRODUCT BY ID
 const getProductById = async (req, res) => {
     try {
+        const id = req.params.id;
 
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid Product ID"
             });
         }
 
-        const product = await Product.findById(
-            req.params.id
+        const cachedProduct = await redisClient.get(
+            `product:${id}`
         );
+
+        if(cachedProduct) {
+            console.log("CACHE HIT");
+
+            const product = JSON.parse(cachedProduct);
+
+            return res.status(200).json({
+                success: true,
+                product
+            });
+        }
+
+        console.log("CACHE MISS");
+
+        const product = await Product.findById(id);
 
         if(!product){
             return res.status(404).json({
@@ -84,6 +133,14 @@ const getProductById = async (req, res) => {
                 message: "Product Not Found"
             });
         }
+
+        await redisClient.set(
+            `product:${id}`,
+            JSON.stringify(product),
+            {
+                EX: 180
+            }
+        );
 
         res.status(200).json({
             success: true,
@@ -140,6 +197,12 @@ const updateProduct = async (req,res) => {
             });
         }
 
+        // CACHE INVALIDATION
+        await redisClient.del(`product:${id}`);
+        //ALL PRODUCTS(LIST stored in redis as it is containing this updated product) CACHE INVALIDATED
+        await redisClient.del("products");
+        console.log("ALL PRODUCT CACHE / CACHE INVALIDATED");
+
         res.status(200).json({
             success: true,
             product
@@ -173,6 +236,12 @@ const deleteProduct = async (req, res) => {
                 message: "Product Not Found"
             });
         }
+
+        // CACHE INVALIDATION
+        await redisClient.del(`product:${id}`);
+        //ALL PRODUCTS(LIST stored in redis as it is containing this product) CACHE INVALIDATED
+        await redisClient.del("products");
+        console.log("ALL PRODUCT CACHE / CACHE INVALIDATED");
 
         res.status(200).json({
             success: true,

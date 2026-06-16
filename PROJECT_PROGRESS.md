@@ -390,3 +390,123 @@ Dockerization: Pending
 
 Frontend: Pending
 
+
+# Day 5 Complete
+
+## Redis Caching
+
+### Features Implemented
+
+* Docker Desktop Setup
+* Redis Container Setup
+* Redis Connection using Node.js Redis Client
+* Product By ID Caching
+* All Products Caching
+* TTL-Based Cache Expiration
+
+---
+
+## Cache Hit / Cache Miss Flow
+
+### Product By ID
+
+Request
+→ Redis Check
+→ Cache Hit → Return Cached Product
+
+OR
+
+→ Cache Miss
+→ MongoDB Query
+→ Store In Redis
+→ Return Product
+
+---
+
+### All Products
+
+Request
+→ Redis Check
+→ Cache Hit → Return Cached Products
+
+OR
+
+→ Cache Miss
+→ MongoDB Query
+→ Store In Redis
+→ Return Products
+
+---
+
+## Cache Invalidation
+
+Implemented cache invalidation for:
+
+### Create Product
+
+* Invalidates All Products Cache
+
+### Update Product
+
+* Invalidates Product Cache
+* Invalidates All Products Cache
+
+### Delete Product
+
+* Invalidates Product Cache
+* Invalidates All Products Cache
+
+---
+
+## Testing Completed
+
+### Product Cache
+
+* Cache Miss Verification
+* Cache Hit Verification
+* TTL Expiration Verification
+
+### All Products Cache
+
+* Cache Miss Verification
+* Cache Hit Verification
+
+### Cache Invalidation
+
+* Create Product
+* Update Product
+* Delete Product
+
+---
+
+## Key Learnings
+
+* Redis Fundamentals
+* Docker Containers
+* Redis Client Integration
+* Cache Hit vs Cache Miss
+* TTL (Time To Live)
+* Cache Aside Pattern
+* Cache Invalidation Strategies
+* Performance Optimization using Redis
+
+---
+
+## Current Status
+
+User Service: Complete ✅
+
+Product Service: Complete ✅
+
+Order Service: Complete ✅
+
+API Gateway: Complete ✅
+
+Redis Integration: Complete ✅
+
+Rate Limiting: Pending
+
+Dockerization: Pending
+
+Frontend: Pending
+
