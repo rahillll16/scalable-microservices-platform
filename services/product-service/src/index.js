@@ -13,14 +13,23 @@ app.use(express.json());
 connectDB();
 connectRedis();
 
-app.use("/api/products", productRoutes);
+app.use((req, res, next) => {
+    console.log(
+        `Request handled by Product Service Instance ${process.env.PORT}`
+    );
+
+    next();
+});
 
 app.get("/health", (req, res) => {
     res.status(200).json({
-        services : "product-services",
-        status : "UP"
+        service: "product-service",
+        instance: process.env.PORT,
+        status: "UP"
     });
 });
+
+app.use("/api/products", productRoutes);
 
 const PORT = process.env.PORT || 3002;
 

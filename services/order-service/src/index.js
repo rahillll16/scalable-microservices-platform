@@ -12,11 +12,20 @@ app.use(express.json());
 
 connectDB();
 
+app.use((req, res, next) => {
+    console.log(
+        `Request handled by Order Service Instance ${process.env.PORT}`
+    );
+
+    next();
+});
+
 app.use("/api/orders", orderRoutes);
 
 app.get("/health", (req, res) => {
     res.status(200).json({
         service: "order-service",
+        instance: process.env.PORT,
         status: "UP"
     });
 });

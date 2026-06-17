@@ -510,3 +510,82 @@ Dockerization: Pending
 
 Frontend: Pending
 
+
+# Day 6
+
+## API Gateway Enhancements
+
+✅ Global Rate Limiting
+
+* Implemented request throttling at API Gateway level
+* Configured request limits per time window
+* Protects platform from excessive traffic and abuse
+
+✅ Login Rate Limiting
+
+* Added dedicated limiter for authentication endpoints
+* Protects against brute-force login attacks
+* Separate limits from global traffic rules
+
+## Health Monitoring
+
+✅ Service Health Dashboard
+
+* Implemented `/system-health` endpoint
+* Aggregates health status of all microservices
+* Returns gateway status, service status, and timestamp
+
+✅ Health Validation
+
+* Used `Promise.allSettled()` for partial failure handling
+* Detects individual service failures without breaking monitoring endpoint
+* Reports service-level availability
+
+## Load Balancing
+
+✅ Round Robin Load Balancing
+
+* Implemented custom round-robin routing inside API Gateway
+* Distributes requests across multiple service instances
+
+### User Service Replicas
+
+* Instance 1 → Port 3001
+* Instance 2 → Port 3004
+
+### Product Service Replicas
+
+* Instance 1 → Port 3002
+* Instance 2 → Port 3005
+
+### Order Service Replicas
+
+* Instance 1 → Port 3003
+* Instance 2 → Port 3006
+
+## Health-Aware Routing
+
+✅ Dynamic Health Checks
+
+* Gateway performs periodic health checks every 10 seconds
+* Tracks availability of all service instances
+
+✅ Intelligent Routing
+
+* Routes traffic only to healthy instances
+* Automatically removes unhealthy replicas from routing pool
+* Automatically restores replicas once healthy again
+
+## Concepts Covered
+
+* API Gateway Pattern
+* Reverse Proxy
+* Rate Limiting
+* Health Monitoring
+* Service Discovery Basics
+* Round Robin Load Balancing
+* Health-Aware Load Balancing
+* Fault Tolerance
+* Multi-Instance Microservices
+
+

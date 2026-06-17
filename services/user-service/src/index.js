@@ -10,11 +10,20 @@ app.use(express.json());
 
 connectDB();
 
+app.use((req, res, next) => {
+    console.log(
+        `Request handled by User Service Instance ${process.env.PORT}`
+    );
+
+    next();
+});
+
 app.use("/api/users", userRoutes); //POST /api/users/register or login or other
 
 app.get("/health", (req,res) => {
     res.status(200).json({
         service : "user-services",
+        instance : process.env.PORT,
         status : "UP"
     });
 });
