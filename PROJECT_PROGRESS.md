@@ -589,3 +589,190 @@ Frontend: Pending
 * Multi-Instance Microservices
 
 
+
+# Day 7 Complete
+
+## Resilience Patterns
+
+### Retry Mechanism
+
+Implemented automatic retry logic for inter-service communication in Order Service.
+
+### Features Implemented
+
+* Axios Retry Integration
+* Automatic Retries for Failed Service Calls
+* Configurable Retry Count
+* Retry Delay with Backoff Strategy
+* Retry Logging for Observability
+
+### Retry Conditions
+
+Retries are triggered for:
+
+* ECONNREFUSED
+* ECONNABORTED
+* HTTP 5xx Server Errors
+
+### Testing Completed
+
+#### User Service Down
+
+* Retry Attempt 1
+* Retry Attempt 2
+* Retry Attempt 3
+* Request Failure After Maximum Retries
+
+#### Product Service Validation
+
+* Successful Validation
+* Retry Logic Verification
+
+### Key Learnings
+
+* Transient Failure Handling
+* Retry Patterns in Distributed Systems
+* Axios Interceptors and Middleware
+* Exponential / Delayed Retry Strategies
+* Service Resilience Concepts
+
+---
+
+## Circuit Breaker Pattern
+
+Implemented custom Circuit Breakers for service dependencies.
+
+### Architecture
+
+Order Service now maintains independent circuit breakers for:
+
+* User Service
+* Product Service
+
+This prevents failures in one dependency from affecting requests to another healthy dependency.
+
+### Circuit States
+
+#### CLOSED
+
+* Normal operation
+* Requests are allowed
+
+#### OPEN
+
+* Triggered after repeated failures
+* Requests are blocked immediately
+* Prevents unnecessary retries and network traffic
+
+#### HALF_OPEN
+
+* Activated after timeout period
+* Allows limited requests to verify service recovery
+* Automatically transitions to CLOSED on success
+* Returns to OPEN on failure
+
+### Features Implemented
+
+* Failure Threshold Tracking
+* Automatic State Transitions
+* Recovery Timeout Window
+* Fast Failure Responses
+* Independent Breakers Per Dependency
+
+### Testing Completed
+
+#### Circuit Opening
+
+* User Service Stopped
+* Consecutive Failures Recorded
+* Circuit Opened After Threshold Reached
+
+#### Fast Failure
+
+* Requests Blocked While Circuit Open
+* No Axios Calls Executed
+* No Retry Logic Triggered
+
+#### Recovery Validation
+
+* HALF_OPEN Transition
+* Service Recovery Verification
+* Automatic Circuit Closure
+
+### Key Learnings
+
+* Circuit Breaker Pattern
+* Fault Isolation
+* Failure Threshold Management
+* State Machines
+* Resilience Engineering
+* Fail Fast Architecture
+* Service Recovery Strategies
+
+---
+
+## Current Architecture
+
+Client
+→ API Gateway
+→ Load Balancer
+→ Health-Aware Routing
+→ Order Service
+→ Retry Mechanism
+→ Circuit Breaker
+→ User Service / Product Service
+
+---
+
+## Current Status
+
+User Service: Complete ✅
+
+Product Service: Complete ✅
+
+Order Service: Complete ✅
+
+API Gateway: Complete ✅
+
+Redis Integration: Complete ✅
+
+Rate Limiting: Complete ✅
+
+Health Monitoring: Complete ✅
+
+Load Balancing: Complete ✅
+
+Retry Mechanism: Complete ✅
+
+Circuit Breaker: Complete ✅
+
+Dockerization: Pending
+
+Message Queue: Pending
+
+Frontend Dashboard: Pending
+
+Deployment: Pending
+
+---
+
+## Concepts Covered So Far
+
+* Microservices Architecture
+* API Gateway Pattern
+* JWT Authentication
+* Password Hashing
+* MongoDB + Mongoose
+* Redis Caching
+* Rate Limiting
+* Reverse Proxy
+* Service Discovery Basics
+* Health Monitoring
+* Round Robin Load Balancing
+* Health-Aware Routing
+* Retry Pattern
+* Circuit Breaker Pattern
+* Fault Tolerance
+* Resilience Engineering
+* Distributed System Communication
+

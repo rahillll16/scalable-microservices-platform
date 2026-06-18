@@ -12,7 +12,7 @@ connectDB();
 
 app.use((req, res, next) => {
     console.log(
-        `Request handled by User Service Instance ${process.env.PORT}`
+         `${req.method} ${req.originalUrl} on PORT: ${process.env.PORT}`
     );
 
     next();

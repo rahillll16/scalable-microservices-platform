@@ -1,8 +1,37 @@
 const Order = require("../models/Order");
 const mongoose = require("mongoose");
 const axios = require("axios"); // for service-to-service communication
+const axiosRetry = require("axios-retry").default;
+
+// Circuit Breaker
+const createCircuitBreaker = require("../utils/circuitBreaker");
+
+const userBreaker = createCircuitBreaker("USER");
+const productBreaker = createCircuitBreaker("PRODUCT");
+
+// Configuring Retry
+axiosRetry(axios, {
+    retries: 3,
+
+    retryDelay: (retryCount, error) => {
+        console.log(
+            `Retry Attempt ${retryCount}: ${error.config.url}`
+        );
+    
+        return retryCount * 1000;
+    },
+
+    retryCondition: (error) => {
+        return (
+            error.code === "ECONNREFUSED" ||
+            error.code === "ECONNABORTED" ||
+            (error.response && error.response.status >= 500)
+        );
+    }
+});
 
 // CREATE ORDER
+
 const createOrder = async (req, res) => {
     try {
         const { userId, productId, quantity } = req.body;
@@ -29,10 +58,42 @@ const createOrder = async (req, res) => {
         //     `http://localhost:3002/api/products/${productId}`
         // );
 
-        await Promise.all([
-            axios.get(`http://localhost:3001/api/users/${userId}`),
-            axios.get(`http://localhost:3002/api/products/${productId}`)
-        ]);
+
+        // await Promise.all([
+        //     axios.get(`http://localhost:3001/api/users/${userId}`),
+        //     axios.get(`http://localhost:3002/api/products/${productId}`)
+        // ]);
+
+        // USER SERVICE
+
+        if(!userBreaker.canRequest()) {
+            return res.status(503).json({
+                success: false,
+                message: "User Service Circuit OPEN"
+            });
+        }
+
+        await axios.get(
+            `http://localhost:3001/api/users/${userId}`
+        );
+        
+        userBreaker.recordSuccess();
+        
+        
+        // PRODUCT SERVICE
+        
+        if(!productBreaker.canRequest()) {
+            return res.status(503).json({
+                success: false,
+                message: "Product Service Circuit OPEN"
+            });
+        }
+        
+        await axios.get(
+            `http://localhost:3002/api/products/${productId}`
+        );
+        
+        productBreaker.recordSuccess();        
 
         const order = await Order.create({
             userId,
@@ -47,6 +108,24 @@ const createOrder = async (req, res) => {
 
     } catch(error) {
 
+        if(
+            error.config &&
+            error.config.url &&
+            error.config.url.includes("3001")
+        ) {
+    
+            userBreaker.recordFailure();
+        }
+    
+        if(
+            error.config &&
+            error.config.url &&
+            error.config.url.includes("3002")
+        ) {
+    
+            productBreaker.recordFailure();
+        }
+
         if(error.response){
             return res.status(error.response.status).json({
                 success: false,
@@ -56,7 +135,7 @@ const createOrder = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: error.message
+            message: error.message || "Internal Server Error"
         });
     }
 };

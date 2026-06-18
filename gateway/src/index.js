@@ -67,7 +67,7 @@ const checkServiceHealth = async ()  => {
         }
     }
 
-    console.log(serviceHealth);
+    // console.log(serviceHealth);
 };
 
 checkServiceHealth();

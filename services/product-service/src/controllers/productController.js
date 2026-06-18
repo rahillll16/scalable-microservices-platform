@@ -199,8 +199,10 @@ const updateProduct = async (req,res) => {
 
         // CACHE INVALIDATION
         await redisClient.del(`product:${id}`);
+
         //ALL PRODUCTS(LIST stored in redis as it is containing this updated product) CACHE INVALIDATED
         await redisClient.del("products");
+
         console.log("ALL PRODUCT CACHE / CACHE INVALIDATED");
 
         res.status(200).json({
@@ -239,8 +241,10 @@ const deleteProduct = async (req, res) => {
 
         // CACHE INVALIDATION
         await redisClient.del(`product:${id}`);
+
         //ALL PRODUCTS(LIST stored in redis as it is containing this product) CACHE INVALIDATED
         await redisClient.del("products");
+        
         console.log("ALL PRODUCT CACHE / CACHE INVALIDATED");
 
         res.status(200).json({
