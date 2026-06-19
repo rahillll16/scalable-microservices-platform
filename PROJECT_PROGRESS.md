@@ -776,3 +776,132 @@ Deployment: Pending
 * Resilience Engineering
 * Distributed System Communication
 
+# Day 8
+
+## Frontend Foundation
+
+✅ React Dashboard Setup
+
+* Initialized React frontend using Vite
+* Configured project structure for monitoring dashboard
+* Integrated Tailwind CSS for modern UI development
+
+✅ Dashboard Layout
+
+* Created dashboard page structure
+* Implemented responsive layout
+* Added reusable Status Cards and Metric Panels
+
+## System Health Monitoring
+
+✅ Live Health Dashboard
+
+* Connected frontend to Gateway `/system-health` endpoint
+* Displays real-time health status of all services
+* Auto-refreshes every 5 seconds
+
+✅ Service Status Visualization
+
+* Gateway Status Monitoring
+* User Service Status Monitoring
+* Product Service Status Monitoring
+* Order Service Status Monitoring
+
+✅ Dynamic Health Rendering
+
+* Service cards automatically update based on backend health state
+* Handles healthy and unhealthy service scenarios
+* Added safe frontend error handling
+
+## Load Balancer Observability
+
+✅ Load Balancer Status API
+
+* Implemented `/load-balancer-status` endpoint
+* Exposes replica health information
+* Tracks currently routed service instance
+
+✅ Replica Monitoring Dashboard
+
+### User Service Replicas
+
+* Port 3001
+* Port 3004
+
+### Product Service Replicas
+
+* Port 3002
+* Port 3005
+
+### Order Service Replicas
+
+* Port 3003
+* Port 3006
+
+✅ Live Replica Health Visualization
+
+* Displays healthy replicas
+* Displays failed replicas
+* Real-time health updates
+
+✅ Current Routing Visibility
+
+* Shows last routed target instance
+* Helps visualize round-robin load balancing behavior
+* Demonstrates health-aware routing decisions
+
+## Circuit Breaker Observability
+
+✅ Circuit Breaker Status API
+
+* Implemented `/orders/circuit-breakers` endpoint
+* Exposes User Service circuit state
+* Exposes Product Service circuit state
+
+✅ Circuit Breaker Dashboard
+
+* Connected frontend to circuit breaker API
+* Displays live circuit states
+
+### Supported States
+
+* CLOSED
+* OPEN
+* HALF_OPEN
+
+✅ Fault Tolerance Visualization
+
+* Circuit status updates automatically
+* Provides visibility into service failures
+* Demonstrates recovery process through dashboard
+
+## Frontend Reliability
+
+✅ API Integration Layer
+
+* Created dedicated frontend service modules
+* Centralized API communication
+* Improved maintainability
+
+✅ Error Handling
+
+* Safe optional chaining
+* Null-state protection
+* Graceful handling of unavailable services
+
+## Concepts Covered
+
+* Frontend Observability
+* Monitoring Dashboards
+* Distributed Systems Visualization
+* Health Monitoring
+* Health-Aware Load Balancing
+* Circuit Breaker Pattern
+* Fault Tolerance
+* Service Replication
+* Dashboard Architecture
+* Real-Time System Monitoring
+* React State Management
+* API Integration
+
+
