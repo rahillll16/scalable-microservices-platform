@@ -9,6 +9,16 @@ const createCircuitBreaker = require("../utils/circuitBreaker");
 const userBreaker = createCircuitBreaker("USER");
 const productBreaker = createCircuitBreaker("PRODUCT");
 
+const getCircuitBreaker = async (req, res) => {
+
+
+    res.json({
+        userService: userBreaker.getCircuitStatus(),
+        productService: productBreaker.getCircuitStatus()
+    });
+};
+
+
 // Configuring Retry
 axiosRetry(axios, {
     retries: 3,
@@ -73,11 +83,20 @@ const createOrder = async (req, res) => {
             });
         }
 
-        await axios.get(
-            `http://localhost:3001/api/users/${userId}`
-        );
+        try {
+
+            await axios.get(
+                `http://localhost:3000/users/${userId}`
+            );
         
-        userBreaker.recordSuccess();
+            userBreaker.recordSuccess();
+        
+        } catch(error) {
+        
+            userBreaker.recordFailure();
+        
+            throw error;
+        }
         
         
         // PRODUCT SERVICE
@@ -89,11 +108,20 @@ const createOrder = async (req, res) => {
             });
         }
         
-        await axios.get(
-            `http://localhost:3002/api/products/${productId}`
-        );
+        try {
+
+            await axios.get(
+                `http://localhost:3000/products/${productId}`
+            );
         
-        productBreaker.recordSuccess();        
+            productBreaker.recordSuccess();
+        
+        } catch(error) {
+        
+            productBreaker.recordFailure();
+        
+            throw error;
+        }      
 
         const order = await Order.create({
             userId,
@@ -107,24 +135,6 @@ const createOrder = async (req, res) => {
         });
 
     } catch(error) {
-
-        if(
-            error.config &&
-            error.config.url &&
-            error.config.url.includes("3001")
-        ) {
-    
-            userBreaker.recordFailure();
-        }
-    
-        if(
-            error.config &&
-            error.config.url &&
-            error.config.url.includes("3002")
-        ) {
-    
-            productBreaker.recordFailure();
-        }
 
         if(error.response){
             return res.status(error.response.status).json({
@@ -222,5 +232,6 @@ module.exports = {
     createOrder,
     getAllOrders,
     getOrderById,
-    getOrdersByUserId
+    getOrdersByUserId,
+    getCircuitBreaker
 };

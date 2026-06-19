@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
+const cors = require("cors");
 
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
@@ -9,7 +10,7 @@ const app = express();
 
 // creating global limiter
 const globalLimiter = rateLimit({
-    windowMs: 15*60*1000,
+    windowMs: 2*60*1000,
     max: 100,
     message: {
         success: false,
@@ -19,7 +20,7 @@ const globalLimiter = rateLimit({
 
 // creating login limiter
 const loginLimiter = rateLimit({
-    windowMs: 15*60*1000,
+    windowMs: 10*60*1000,
     max: 5,
     message: {
         success: false,
@@ -107,11 +108,23 @@ setInterval(
 //     )
 // };
 
-// Health-Aware LOADBALANCER
+// HEALTH-AWARE LOADBALANCER
 const currentIdx = {
     users:0,
     products:0,
     orders:0
+};
+
+const currentTarget = {
+    users: null,
+    products: null,
+    orders: null
+};
+
+const lastRequestTime = {
+    users: null,
+    products: null,
+    orders: null
 };
 
 const getNextHealthyService = (serviceType) => {
@@ -122,6 +135,9 @@ const getNextHealthyService = (serviceType) => {
             .map(([url]) => url);
 
     if(healthyServices.length === 0){
+        
+        currentTarget[serviceType] = null;
+
         throw new Error(`No Healthy ${serviceType} instances available`);
     }
 
@@ -129,16 +145,45 @@ const getNextHealthyService = (serviceType) => {
 
     const service = healthyServices[currentIdx[serviceType]];
 
+    currentTarget[serviceType] = service;
+
+    lastRequestTime[serviceType] = new Date().toISOString();
+
     currentIdx[serviceType] = (currentIdx[serviceType] + 1) % healthyServices.length;
 
     return service;
 };
 
+
 // app.use(express.json()); // removed as not good for post requests(get stucked)
+
+app.use((cors()));
 
 // GLOBAL RATE LIMITER
 app.use(globalLimiter);
 
+// Load-Balancer-Status API
+app.get("/load-balancer-status", async (req, res) => {
+
+    res.status(200).json({
+        users: {
+            instances: serviceHealth.users,
+            currentTarget: currentTarget.users
+        },
+
+        products: {
+            instances: serviceHealth.products,
+            currentTarget: currentTarget.products
+        },
+
+        orders: {
+            instances: serviceHealth.orders,
+            currentTarget: currentTarget.orders
+        }
+    });
+});
+
+// Health API
 app.get("/health", (req, res) => {
     res.status(200).json({
         service: "api-gateway",
@@ -147,42 +192,35 @@ app.get("/health", (req, res) => {
 });
 
 // Health-Monitoring API
-app.get("/system-health", async (req, res) => {
-    try {
+app.get("/system-health", (req, res) => {
 
-        const [userService, productService, orderService] = 
-            await Promise.allSettled([
-                axios.get("http://localhost:3001/health"),
-                axios.get("http://localhost:3002/health"),
-                axios.get("http://localhost:3003/health")
+    const getOverallStatus = (instances) => {
 
-            ]);
+        const hasHealthyInstance =
+            Object.values(instances).some(
+                status => status === true
+            );
 
-        // function to get microsevice status
-        const getStatus = (service) =>
-            service.status === "fulfilled" &&
-            service.value.data.status === "UP"
-                ? "UP"
-                : "DOWN";
+        return hasHealthyInstance ? "UP" : "DOWN";
+    };
 
-        const services = {
-            userService : getStatus(userService),
-            productService: getStatus(productService),
-            orderService: getStatus(orderService)
-        }
+    const overallServices = {
+        userService: getOverallStatus(serviceHealth.users),
 
-        res.status(200).json({
-            gateway : "UP",
-            services,
-            timestamp : new Date().toISOString()
-        });
+        productService: getOverallStatus(serviceHealth.products),
 
-    } catch(error){
-        res.status(500).json({
-            gateway: "DOWN",
-            message: error.message
-        });
-    }
+        orderService: getOverallStatus(serviceHealth.orders)
+    };
+
+    res.status(200).json({
+        gateway: "UP",
+
+        overallServices,
+
+        instances: serviceHealth,
+
+        timestamp: new Date().toISOString()
+    });
 });
 
 
@@ -210,6 +248,11 @@ app.use(
         },
 
         pathRewrite: (path) => {
+
+            if(path === "/health"){
+                return "/health";
+            }
+
             return "/api/users" + path;
         }
     })
@@ -232,6 +275,11 @@ app.use(
         },
 
         pathRewrite: (path) => {
+
+            if(path === "/health"){
+                return "/health";
+            }
+
             return "/api/products" + path;
         }
     })
@@ -254,6 +302,11 @@ app.use(
         },
         
         pathRewrite: (path) => {
+
+            if(path === "/health"){
+                return "/health";
+            }
+
             return "/api/orders" + path;
         }
     })

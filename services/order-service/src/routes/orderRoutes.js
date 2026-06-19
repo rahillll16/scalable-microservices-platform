@@ -4,11 +4,15 @@ const {
     createOrder,
     getAllOrders,
     getOrderById,
-    getOrdersByUserId
+    getOrdersByUserId,
+    getCircuitBreaker
 
 } = require("../controllers/orderController");
 
 const router = express.Router();
+
+// cicuit-breaker-status API
+router.get("/circuit-breakers", getCircuitBreaker);
 
 router.post("/", createOrder);
 

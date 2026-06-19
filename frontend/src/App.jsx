@@ -1,10 +1,17 @@
+import Dashboard from "./pages/Dashboard";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 function App() {
-  return (
-    <div className="h-screen flex items-center justify-center text-4xl font-bold">
-      Frontend Running 🚀
-    </div>
-  );
+
+    return (
+
+        <DashboardLayout>
+
+            <Dashboard />
+
+        </DashboardLayout>
+
+    );
 }
 
 export default App;

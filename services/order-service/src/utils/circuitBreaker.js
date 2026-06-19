@@ -56,7 +56,13 @@ const createCircuitBreaker = (serviceType) => {
         }
     };
 
-    const getCircuitStatus = () => circuitState;
+    const getCircuitStatus = () => {
+        return circuitState;
+    }
+
+    // console.log(
+    //     `${serviceType} Breaker Created`
+    // );
 
     return {
         canRequest,
