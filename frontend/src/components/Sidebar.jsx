@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 
 function Sidebar() {
     return (
@@ -5,8 +7,8 @@ function Sidebar() {
 
             <div className="p-6">
 
-                <h1 className="text-xl font-bold">
-                    Command Center
+                <h1 className="text-xl font-bold text-cyan-400">
+                    Microservices
                 </h1>
 
             </div>
@@ -15,19 +17,80 @@ function Sidebar() {
 
                 <ul className="space-y-3">
 
-                    <li>🏠 Dashboard</li>
+                    <li>
+                        <NavLink
+                            to="/"
+                            className={({isActive}) =>
+                                `block p-3 rounded-lg ${
+                                    isActive
+                                        ? "bg-cyan-600 text-white"
+                                        : "text-gray-300 hover:bg-slate-800"
+                                }`
+                            }
+                        >
+                            📊 Dashboard
+                        </NavLink>
+                    </li>
 
-                    <li>📊 System Health</li>
+                    <li>
+                        <NavLink
+                            to="/register"
+                            className={({isActive}) =>
+                                `block p-3 rounded-lg ${
+                                    isActive
+                                        ? "bg-cyan-600 text-white"
+                                        : "text-gray-300 hover:bg-slate-800"
+                                }`
+                            }
+                        >
+                            👤 Register
+                        </NavLink>
+                    </li>
 
-                    <li>⚖️ Load Balancer</li>
+                    <li>
+                        <NavLink
+                            to="/login"
+                            className={({isActive}) =>
+                                `block p-3 rounded-lg ${
+                                    isActive
+                                        ? "bg-cyan-600 text-white"
+                                        : "text-gray-300 hover:bg-slate-800"
+                                }`
+                            }
+                        >
+                            🔐 Login
+                        </NavLink>
+                    </li>
 
-                    <li>🛡️ Circuit Breakers</li>
+                    <li>
+                        <NavLink
+                            to="/products"
+                            className={({isActive}) =>
+                                `block p-3 rounded-lg ${
+                                    isActive
+                                        ? "bg-cyan-600 text-white"
+                                        : "text-gray-300 hover:bg-slate-800"
+                                }`
+                            }
+                        >
+                            📦 Products
+                        </NavLink>
+                    </li>
 
-                    <li>⚡ Redis Analytics</li>
-
-                    <li>🏗️ Infrastructure</li>
-
-                    <li>📜 Activity Feed</li>
+                    <li>
+                        <NavLink
+                            to="/orders"
+                            className={({isActive}) =>
+                                `block p-3 rounded-lg ${
+                                    isActive
+                                        ? "bg-cyan-600 text-white"
+                                        : "text-gray-300 hover:bg-slate-800"
+                                }`
+                            }
+                        >
+                            🛒 Orders
+                        </NavLink>
+                    </li>
 
                 </ul>
 

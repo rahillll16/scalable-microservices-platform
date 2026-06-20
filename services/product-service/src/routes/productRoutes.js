@@ -6,7 +6,8 @@ const {
     getAllProducts,
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 
 } = require("../controllers/productController");
 
@@ -15,6 +16,8 @@ const router = express.Router();
 router.post("/", createProduct);
 
 router.get("/",getAllProducts);
+
+router.get("/search/:name", searchProducts);
 
 router.get("/:id", getProductById);
 

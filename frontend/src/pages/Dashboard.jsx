@@ -201,11 +201,10 @@ function Dashboard() {
                     <div className="space-y-6 text-white">
 
                         {/* Users */}
-                        <div>
-
-                            <h3 className="font-semibold mb-2">
-                                Users
-                            </h3>
+                        <h3 className="font-semibold mb-2 text-center"> 
+                                Users 
+                        </h3>
+                        <div className="grid grid-cols-2 gap-3">
 
                             {
                                 loadBalancer &&
@@ -215,11 +214,13 @@ function Dashboard() {
                                         <div
                                             key={url}
                                             className={`
+                                                h-20
                                                 rounded-lg
-                                                p-3
+                                                flex
+                                                flex-col
+                                                justify-center
+                                                items-center
                                                 border
-                                                text-center
-                                                font-semibold
                                                 ${
                                                     healthy
                                                     ? "border-green-500 bg-green-500/10"
@@ -243,26 +244,25 @@ function Dashboard() {
                                     ))
                             }
 
-                            <div className="mt-2 text-cyan-400">
+                        </div>
 
-                                🎯 Last Routed:
+                        <div className="mt-3 text-cyan-400">
 
-                                {
-                                    loadBalancer?.users?.currentTarget
-                                        ? loadBalancer.users.currentTarget.split(":").pop()
-                                        : "None"
-                                }
+                            🎯 Last Routed: {
 
-                            </div>
+                                loadBalancer?.users?.currentTarget
+                                    ? loadBalancer.users.currentTarget.split(":").pop()
+                                    : "None"
+
+                            }
 
                         </div>
 
                         {/* Products */}
-                        <div>
-
-                            <h3 className="font-semibold mb-2">
-                                Products
-                            </h3>
+                        <h3 className="font-semibold mb-2 text-center"> 
+                                Products 
+                        </h3>
+                        <div className="grid grid-cols-2 gap-3">
 
                             {
                                 loadBalancer &&
@@ -272,11 +272,13 @@ function Dashboard() {
                                         <div
                                             key={url}
                                             className={`
+                                                h-20
                                                 rounded-lg
-                                                p-3
+                                                flex
+                                                flex-col
+                                                justify-center
+                                                items-center
                                                 border
-                                                text-center
-                                                font-semibold
                                                 ${
                                                     healthy
                                                     ? "border-green-500 bg-green-500/10"
@@ -300,26 +302,25 @@ function Dashboard() {
                                     ))
                             }
 
-                            <div className="mt-2 text-cyan-400">
+                        </div>
 
-                                🎯 Last Routed:
+                        <div className="mt-3 text-cyan-400">
 
-                                {
-                                    loadBalancer?.products?.currentTarget
-                                        ? loadBalancer.products.currentTarget.split(":").pop()
-                                        : "None"
-                                }
+                            🎯 Last Routed: {
 
-                            </div>
+                                loadBalancer?.products?.currentTarget
+                                    ? loadBalancer.products.currentTarget.split(":").pop()
+                                    : "None"
+
+                            }
 
                         </div>
                         
                         {/* Orders */}
-                        <div>
-
-                            <h3 className="font-semibold mb-2">
-                                Orders
-                            </h3>
+                        <h3 className="font-semibold mb-2 text-center"> 
+                                Orders 
+                        </h3>
+                        <div className="grid grid-cols-2 gap-3">
 
                             {
                                 loadBalancer &&
@@ -329,11 +330,13 @@ function Dashboard() {
                                         <div
                                             key={url}
                                             className={`
+                                                h-20
                                                 rounded-lg
-                                                p-3
+                                                flex
+                                                flex-col
+                                                justify-center
+                                                items-center
                                                 border
-                                                text-center
-                                                font-semibold
                                                 ${
                                                     healthy
                                                     ? "border-green-500 bg-green-500/10"
@@ -357,17 +360,17 @@ function Dashboard() {
                                     ))
                             }
 
-                            <div className="mt-2 text-cyan-400">
+                        </div>
 
-                                🎯 Last Routed:
+                        <div className="mt-3 text-cyan-400">
 
-                                {
-                                    loadBalancer?.orders?.currentTarget
-                                        ? loadBalancer.orders.currentTarget.split(":").pop()
-                                        : "None"
-                                }
+                            🎯 Last Routed: {
 
-                            </div>
+                                loadBalancer?.orders?.currentTarget
+                                    ? loadBalancer.orders.currentTarget.split(":").pop()
+                                    : "None"
+
+                            }
 
                         </div>
                 

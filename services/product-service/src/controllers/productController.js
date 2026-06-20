@@ -260,10 +260,40 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+// Search products by name
+const searchProducts = async (req, res) => {
+
+    try {
+
+        const { name } = req.params;
+
+        const products = await Product.find({
+            name: {
+                $regex: name,
+                $options: "i"
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            products
+        });
+
+    } catch(error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createProduct,
     getAllProducts,
     getProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 };
