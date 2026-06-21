@@ -8,6 +8,9 @@ import Orders from "./pages/Orders";
 
 import DashboardLayout from "./layouts/DashboardLayout";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+
 function App() {
 
     return (
@@ -16,32 +19,44 @@ function App() {
 
             <DashboardLayout>
 
-                <Routes>
+            <Routes>
 
-                    <Route
-                        path = "/"
-                        element = {<Dashboard/>}
-                    />
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
 
-                    <Route
-                        path = "/login"
-                        element = {<Login/>}
-                    />
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
-                    <Route
-                        path = "/register"
-                        element = {<Register/>}
-                    />
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
-                    <Route
-                        path = "/products"
-                        element = {<Products/>}
-                    />
+                <Route
+                    path="/products"
+                    element={
+                        <ProtectedRoute>
+                            <Products />
+                        </ProtectedRoute>
+                    }
+                />
 
-                    <Route
-                        path = "/orders"
-                        element = {<Orders/>}
-                    />
+                <Route
+                    path="/orders"
+                    element={
+                        <ProtectedRoute>
+                            <Orders />
+                        </ProtectedRoute>
+                    }
+                />
 
                 </Routes>
 

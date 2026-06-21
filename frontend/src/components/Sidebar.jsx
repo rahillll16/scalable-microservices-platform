@@ -2,6 +2,10 @@ import { NavLink } from "react-router-dom";
 
 
 function Sidebar() {
+
+    const isLoggedIn = !!localStorage.getItem("token");
+    const isAdmin = localStorage.getItem("role") === "admin";
+
     return (
         <div className="w-64 h-screen bg-slate-950 border-r border-slate-800 text-white">
 
@@ -15,82 +19,51 @@ function Sidebar() {
 
             <nav className="px-4">
 
-                <ul className="space-y-3">
+            <ul className="space-y-3">
 
-                    <li>
-                        <NavLink
-                            to="/"
-                            className={({isActive}) =>
-                                `block p-3 rounded-lg ${
-                                    isActive
-                                        ? "bg-cyan-600 text-white"
-                                        : "text-gray-300 hover:bg-slate-800"
-                                }`
-                            }
-                        >
-                            📊 Dashboard
-                        </NavLink>
-                    </li>
+                {
+                    !isLoggedIn && (
+                        <>
+                            <li>
+                                <NavLink to="/register" >
+                                    👤 Register
+                                </NavLink>
+                            </li>
 
-                    <li>
-                        <NavLink
-                            to="/register"
-                            className={({isActive}) =>
-                                `block p-3 rounded-lg ${
-                                    isActive
-                                        ? "bg-cyan-600 text-white"
-                                        : "text-gray-300 hover:bg-slate-800"
-                                }`
-                            }
-                        >
-                            👤 Register
-                        </NavLink>
-                    </li>
+                            <li>
+                                <NavLink to="/login" >
+                                    🔐 Login
+                                </NavLink>
+                            </li>
+                        </>
+                    )
+                }
 
-                    <li>
-                        <NavLink
-                            to="/login"
-                            className={({isActive}) =>
-                                `block p-3 rounded-lg ${
-                                    isActive
-                                        ? "bg-cyan-600 text-white"
-                                        : "text-gray-300 hover:bg-slate-800"
-                                }`
-                            }
-                        >
-                            🔐 Login
-                        </NavLink>
-                    </li>
+                {
+                    isLoggedIn && (
+                        <>
+                            <li>
+                                <NavLink to="/">
+                                    📊 Dashboard
+                                </NavLink>
+                            </li>
 
-                    <li>
-                        <NavLink
-                            to="/products"
-                            className={({isActive}) =>
-                                `block p-3 rounded-lg ${
-                                    isActive
-                                        ? "bg-cyan-600 text-white"
-                                        : "text-gray-300 hover:bg-slate-800"
-                                }`
-                            }
-                        >
-                            📦 Products
-                        </NavLink>
-                    </li>
+                            <li>
+                                <NavLink to="/products">
+                                    📦 Products
+                                </NavLink>
+                            </li>
 
-                    <li>
-                        <NavLink
-                            to="/orders"
-                            className={({isActive}) =>
-                                `block p-3 rounded-lg ${
-                                    isActive
-                                        ? "bg-cyan-600 text-white"
-                                        : "text-gray-300 hover:bg-slate-800"
-                                }`
-                            }
-                        >
-                            🛒 Orders
-                        </NavLink>
-                    </li>
+                            {!isAdmin && (
+                                <li>
+                                    <NavLink to="/orders">
+                                        🛒 Orders
+                                    </NavLink>
+                                </li>
+                            )}
+                        </>
+                    )
+                }
 
                 </ul>
 

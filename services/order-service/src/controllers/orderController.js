@@ -228,10 +228,62 @@ const getOrdersByUserId = async (req, res) => {
     }
 };
 
+// DELETE ORDER
+const deleteOrder = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Order ID"
+            });
+        }
+
+        const order = await Order.findById(id);
+
+        if(!order){
+            return res.status(404).json({
+                success: false,
+                message: "Order Not Found"
+            });
+        }
+
+        // OWNER CHECK
+
+        if(
+            order.userId !== req.user.userId &&
+            req.user.role !== "admin"
+        ){
+            return res.status(403).json({
+                success: false,
+                message: "You can only delete your own orders"
+            });
+        }
+
+        await order.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            message: "Order Deleted Successfully"
+        });
+
+    } catch(error){
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrderById,
     getOrdersByUserId,
-    getCircuitBreaker
+    getCircuitBreaker,
+    deleteOrder
 };

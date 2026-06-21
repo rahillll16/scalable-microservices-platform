@@ -30,10 +30,9 @@ function Login() {
 
             const data = await loginUser(formData);
 
-            localStorage.setItem(
-                "token",
-                data.token
-            );
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("role", data.role);
+            localStorage.setItem("name", data.user.name);
 
             alert("Login Successful");
 

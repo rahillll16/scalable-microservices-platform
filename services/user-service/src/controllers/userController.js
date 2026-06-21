@@ -39,16 +39,23 @@ const loginUser = async (req,res) => {
         const token = jwt.sign(
             {
                 userId: user._id,
-                email: user.email
+                email: user.email,
+                role: user.role
             },
             process.env.JWT_SECRET,
             {
                 expiresIn: process.env.JWT_EXPIRES_IN
             }
         );
+        console.log("ROLE:", user.role);
         res.status(200).json({
             success: true,
-            token
+            token,
+            role: user.role,
+            user: {
+                name: user.name,
+                email: user.email
+            }
         });
     } catch (error) {
         res.status(500).json({
@@ -87,7 +94,7 @@ const registerUser = async (req,res) => {
             password: hashedPassword
         });
 
-        console.log("User Created:");
+        console.log("User Created");
 
         res.status(201).json({
             success: true,

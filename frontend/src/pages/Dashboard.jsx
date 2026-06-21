@@ -5,10 +5,18 @@ import { use, useEffect, useState } from "react";
 import { getSystemHealth } from "../services/healthService";
 import { getLoadBalancerStatus } from "../services/loadBalancerService";
 import { getCircuitBreakerStatus } from "../services/circuitBreakerService";
+import { getRedisMetrics } from "../services/productService";
 
 
 
 function Dashboard() {
+
+    const [redisMetrics, setRedisMetrics] =
+    useState({
+        hits: 0,
+        misses: 0,
+        ratio: 0
+    });
 
     const [health, setHealth] = useState(null);
     const [loadBalancer, setLoadBalancer] = useState(null);
@@ -53,6 +61,25 @@ function Dashboard() {
         }
     };
 
+    // fetching redis metric
+    const fetchRedisMetrics = async () => {
+
+        try {
+    
+            const data = await getRedisMetrics();
+    
+            setRedisMetrics({
+                hits: data.hits,
+                misses: data.misses,
+                ratio: data.ratio
+            });
+    
+        } catch(error) {
+    
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
 
         fetchHealth();
@@ -64,6 +91,7 @@ function Dashboard() {
                 fetchHealth();
                 fetchLoadBalancer();
                 fetchCircuitBreakers();
+                fetchRedisMetrics();
             },
             5000
         );
@@ -179,17 +207,17 @@ function Dashboard() {
 
                         <div className="flex justify-between">
                             <span>Cache Hits</span>
-                            <span>0</span>
+                            <span>{redisMetrics.hits}</span>
                         </div>
 
                         <div className="flex justify-between">
                             <span>Cache Misses</span>
-                            <span>0</span>
+                            <span>{redisMetrics.misses}</span>
                         </div>
 
                         <div className="flex justify-between">
                             <span>Hit Ratio</span>
-                            <span>0%</span>
+                            <span>{redisMetrics.ratio}%</span>
                         </div>
 
                     </div>

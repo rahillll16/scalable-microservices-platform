@@ -37,3 +37,20 @@ export const updateProduct = async (id, productData) => {
 
     return response.data;
 };
+
+export const getProductById = async (id) => {
+
+    const response = await api.get(
+        `/products/${id}`
+    );
+
+    return response.data;
+};
+
+export const getRedisMetrics = async () => {
+    const response = await api.get(
+        "/products/redis/metrics"
+    );
+
+    return response.data;
+};

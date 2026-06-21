@@ -57,6 +57,8 @@ const getAllProducts = async (req, res) => {
 
         if(cachedProducts){
 
+            await redisClient.incr("redis:hits");
+
             console.log("ALL PRODUCTS CACHE HIT");
 
             const products = JSON.parse(cachedProducts);
@@ -70,6 +72,8 @@ const getAllProducts = async (req, res) => {
         }
 
         console.log("ALL PRODUCTS CACHE MISS");
+
+        await redisClient.incr("redis:misses");
 
         const products = await Product.find();
 
@@ -115,6 +119,8 @@ const getProductById = async (req, res) => {
         if(cachedProduct) {
             console.log("CACHE HIT");
 
+            await redisClient.incr("redis:misses");
+
             const product = JSON.parse(cachedProduct);
 
             return res.status(200).json({
@@ -124,6 +130,8 @@ const getProductById = async (req, res) => {
         }
 
         console.log("CACHE MISS");
+
+        await redisClient.incr("redis:misses");
 
         const product = await Product.findById(id);
 
@@ -289,11 +297,38 @@ const searchProducts = async (req, res) => {
     }
 };
 
+// Redis metric
+const getRedisMetrics = async (req, res) => {
+
+    const hits = Number(
+        await redisClient.get("redis:hits")
+    ) || 0;
+
+    const misses = Number(
+        await redisClient.get("redis:misses")
+    ) || 0;
+
+    const total = hits + misses;
+
+    const ratio =
+        total === 0
+            ? 0
+            : ((hits / total) * 100).toFixed(2);
+
+    res.status(200).json({
+        success: true,
+        hits,
+        misses,
+        ratio
+    });
+};
+
 module.exports = {
     createProduct,
     getAllProducts,
     getProductById,
     updateProduct,
     deleteProduct,
-    searchProducts
+    searchProducts,
+    getRedisMetrics
 };

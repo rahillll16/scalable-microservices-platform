@@ -996,3 +996,183 @@ Deployment: Pending
 - Client-side Search
 - Dashboard Design
 - Microservice Communication
+
+
+# Day 10
+
+### Authentication & Authorization
+
+✅ Implemented Protected Routes
+
+* Created ProtectedRoute component
+* Restricted Products and Orders pages to logged-in users
+* Redirect unauthenticated users to Login page
+
+✅ Implemented Role-Based UI
+
+* Admin-only Product Management UI
+* Regular users cannot see Create/Edit/Delete product actions
+* Dynamic Sidebar based on authentication status and role
+
+✅ Navbar Improvements
+
+* Display logged-in user's name
+* Added Logout functionality
+* Clear token, role and user data from localStorage on logout
+
+---
+
+### Product Service
+
+✅ Product Search
+
+* Search products by name
+* Real-time filtering on frontend
+
+✅ Admin Protection
+
+* Added authMiddleware
+* Added adminMiddleware
+* Protected Create Product API
+* Protected Update Product API
+* Protected Delete Product API
+
+⚠️ Pending
+
+* Debug Update Product issue after middleware integration
+
+---
+
+### Orders Service
+
+✅ Create Order
+
+* User can place orders from Products page
+* Product details passed through navigation state
+
+✅ Order Listing
+
+* Fetch orders by logged-in user
+* Decode JWT to identify current user
+
+✅ Product Details Enrichment
+
+* Fetch Product details using productId
+* Display:
+
+  * Product Name
+  * Description
+  * Price
+  * Quantity
+
+✅ Order Summary
+
+* Calculate Total Price per Order
+* Calculate Grand Total Order Value
+
+✅ Delete Order
+
+* Implemented Delete Order API
+* Added frontend delete functionality
+
+✅ Authorization
+
+* Users can delete only their own orders
+* Ownership verification added
+
+---
+
+### Frontend Improvements
+
+✅ Responsive Product Grid
+
+* 4 products per row on large screens
+* Responsive breakpoints
+
+✅ Responsive Orders Grid
+
+* 3 orders per row on large screens
+
+✅ Edit Product UX
+
+* Dynamic button:
+
+  * Add Product
+  * Update Product
+* Cancel Edit functionality
+
+---
+
+### Redis
+
+✅ Redis Analytics Backend
+
+Implemented metrics tracking:
+
+* Cache Hits
+* Cache Misses
+* Hit Ratio
+
+Added Redis Metrics Endpoint:
+
+GET /products/redis/metrics
+
+⚠️ Pending
+
+* Connect Redis Analytics to Dashboard UI
+
+---
+
+### Security
+
+✅ JWT Authentication
+
+* Product Service JWT verification
+* Order Service JWT verification
+
+✅ Role-Based Authorization
+
+* Admin-only product modification
+* User ownership checks on orders
+
+---
+
+## Current Status
+
+### Completed
+
+* User Service
+* Authentication
+* Authorization
+* Product CRUD
+* Product Search
+* Order Creation
+* Order Listing
+* Order Deletion
+* Redis Product Cache
+* Circuit Breaker
+* Retry Logic
+* Protected Routes
+* Role-Based UI
+
+### Pending
+
+* Fix Product Update issue
+* Connect Redis Analytics Dashboard
+* Service Health Metrics
+* Dockerization
+* Docker Compose
+* Multi-instance Services
+* Enhanced Load Balancing
+
+---
+
+## Next Session Plan
+
+1. Fix Product Update issue
+2. Complete Redis Analytics Dashboard
+3. Git Commit
+4. Dockerize User Service
+5. Dockerize Product Service
+6. Dockerize Order Service
+7. Docker Compose Setup

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
     createProduct,
@@ -8,6 +9,10 @@ import {
 } from "../services/productService";
 
 function Products() {
+
+    const navigate = useNavigate();
+
+    const isAdmin = localStorage.getItem("role") === "admin";
 
     const [products, setProducts] = useState([]);
 
@@ -131,6 +136,16 @@ function Products() {
         });
     };
 
+    const handleOrderNow = (product) => {
+
+        navigate("/orders", {
+            state: {
+                productId: product._id,
+                productName: product.name
+            }
+        });
+    };
+
     const filteredProducts = products.filter((product) =>
         product.name
             .toLowerCase()
@@ -146,73 +161,77 @@ function Products() {
                     Products
                 </h1>
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="bg-slate-900 p-6 rounded-xl space-y-4 mb-8"
-                >
+                { 
+                    isAdmin && (   
+                        <form
+                            onSubmit={handleSubmit}
+                            className="bg-slate-900 p-6 rounded-xl space-y-4 mb-8"
+                        >
 
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Product Name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full p-3 rounded bg-slate-800 text-white"
-                    />
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Product Name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full p-3 rounded bg-slate-800 text-white"
+                            />
 
-                    <textarea
-                        name="description"
-                        placeholder="Description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="w-full p-3 rounded bg-slate-800 text-white"
-                    />
+                            <textarea
+                                name="description"
+                                placeholder="Description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                className="w-full p-3 rounded bg-slate-800 text-white"
+                            />
 
-                    <input
-                        type="number"
-                        name="price"
-                        placeholder="Price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        className="w-full p-3 rounded bg-slate-800 text-white"
-                    />
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="Price"
+                                value={formData.price}
+                                onChange={handleChange}
+                                className="w-full p-3 rounded bg-slate-800 text-white"
+                            />
 
-                    <div className="flex gap-2">
+                            <div className="flex gap-2">
 
-                    <button
-                        type="submit"
-                        className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded text-white"
-                    >
-                        {
-                            editingId
-                                ? "Update Product"
-                                : "Add Product"
-                        }
-                    </button>
-
-                    {
-                        editingId && (
                             <button
-                                type="button"
-                                onClick={() => {
-                                    setEditingId(null);
-
-                                    setFormData({
-                                        name: "",
-                                        description: "",
-                                        price: ""
-                                    });
-                                }}
-                                className="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded text-white"
+                                type="submit"
+                                className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded text-white"
                             >
-                                Cancel
+                                {
+                                    editingId
+                                        ? "Update Product"
+                                        : "Add Product"
+                                }
                             </button>
-                        )
-                    }
 
-                    </div>
+                            {
+                                editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditingId(null);
 
-                </form>
+                                            setFormData({
+                                                name: "",
+                                                description: "",
+                                                price: ""
+                                            });
+                                        }}
+                                        className="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded text-white"
+                                    >
+                                        Cancel
+                                    </button>
+                                )
+                            }
+
+                            </div>
+
+                        </form>
+                    )
+                }
 
             </div>
 
@@ -262,24 +281,47 @@ function Products() {
                             <p className="text-cyan-400 mt-2">
                                 ₹ {product.price}
                             </p>
-
-                            <div className="flex gap-2 mt-4">
-
-                                <button
-                                    onClick={() => handleEdit(product)}
-                                    className="flex-1 bg-yellow-500 hover:bg-yellow-600 px-3 py-2 rounded text-white"
+                            {
+                                !isAdmin && (
+                                    <button
+                                    onClick={() => handleOrderNow(product)}
+                                    className="
+                                        w-full
+                                        mt-4
+                                        bg-cyan-600
+                                        hover:bg-cyan-700
+                                        px-3
+                                        py-2
+                                        rounded
+                                        text-white
+                                    "
                                 >
-                                    Edit
+                                    Order Now
                                 </button>
+                                )
+                            }
 
-                                <button
-                                    onClick={() => handleDelete(product._id)}
-                                    className="flex-1 bg-red-600 hover:bg-red-700 px-3 py-2 rounded text-white"
-                                >
-                                    Delete
-                                </button>
+                            { 
+                                isAdmin && (
+                                    <div className="flex gap-2 mt-4">
 
-                            </div>
+                                        <button
+                                            onClick={() => handleEdit(product)}
+                                            className="flex-1 bg-yellow-500 hover:bg-yellow-600 px-3 py-2 rounded text-white"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            onClick={() => handleDelete(product._id)}
+                                            className="flex-1 bg-red-600 hover:bg-red-700 px-3 py-2 rounded text-white"
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+                                )
+                            }
 
                         </div>
                     ))
