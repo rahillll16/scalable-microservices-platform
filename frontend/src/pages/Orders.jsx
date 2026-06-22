@@ -244,10 +244,6 @@ function Orders() {
                                         Quantity: {order.quantity}
                                     </p>
 
-                                    <p className="text-gray-300 mt-2">
-                                        Quantity: {order.quantity}
-                                    </p>
-
                                     <p className="text-green-400 font-semibold mt-2">
                                         Total: ₹ {
                                             (order.product?.price || 0) *

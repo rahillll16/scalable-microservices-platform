@@ -44,7 +44,10 @@ axiosRetry(axios, {
 
 const createOrder = async (req, res) => {
     try {
-        const { userId, productId, quantity } = req.body;
+
+        const userId = req.user.userId;
+
+        const { productId, quantity } = req.body;
 
         if(!userId || !productId || quantity === undefined){
             return res.status(400).json({
@@ -86,12 +89,18 @@ const createOrder = async (req, res) => {
         try {
 
             await axios.get(
-                `http://localhost:3000/users/${userId}`
+                `http://localhost:3000/users/${userId}`,
+                {
+                    headers: {
+                        Authorization: req.headers.authorization // user/:id is protected bu auth
+                    }
+                }
             );
         
             userBreaker.recordSuccess();
         
         } catch(error) {
+            // console.log(error.response?.data);
         
             userBreaker.recordFailure();
         
@@ -117,6 +126,7 @@ const createOrder = async (req, res) => {
             productBreaker.recordSuccess();
         
         } catch(error) {
+            // console.log(error.response?.data);
         
             productBreaker.recordFailure();
         
@@ -171,6 +181,7 @@ const getAllOrders = async (req, res) => {
 
 // GET ORDER BY ID
 const getOrderById = async (req, res) => {
+
     try {
         
         const { id } = req.params
@@ -183,6 +194,16 @@ const getOrderById = async (req, res) => {
         }
 
         const order = await Order.findById(id);
+
+        if(
+            req.user.role !== "admin" &&
+            order.userId !== req.user.userId
+        ){
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
 
         if(!order){
             return res.status(404).json({
@@ -207,6 +228,16 @@ const getOrderById = async (req, res) => {
 // GET ORDERS BY USER ID
 const getOrdersByUserId = async (req, res) => {
     try {
+
+        if(
+            req.user.role !== "admin" &&
+            req.user.userId !== req.params.userId
+        ){
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
         
         const { userId } = req.params;
 

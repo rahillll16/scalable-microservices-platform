@@ -153,52 +153,93 @@ function Products() {
     );
 
     return (
-        <div>
-
-            <div className="max-w-3xl mx-auto">
-
-                <h1 className="text-3xl font-bold text-white mb-6 text-center">
+        <div className="w-full">
+    
+            <div className="mb-6">
+    
+                <h1 className="text-3xl font-bold text-white">
                     Products
                 </h1>
-
-                { 
-                    isAdmin && (   
-                        <form
-                            onSubmit={handleSubmit}
-                            className="bg-slate-900 p-6 rounded-xl space-y-4 mb-8"
-                        >
-
+    
+                <p className="text-gray-400 mt-1">
+                    Add and manage your products
+                </p>
+    
+            </div>
+    
+            {
+                isAdmin && (
+                    <form
+                        onSubmit={handleSubmit}
+                        className="
+                            bg-slate-900
+                            border
+                            border-slate-800
+                            rounded-xl
+                            p-5
+                            mb-6
+                        "
+                    >
+    
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="Product Name"
+                                placeholder="e.g. iPhone 16"
                                 value={formData.name}
                                 onChange={handleChange}
-                                className="w-full p-3 rounded bg-slate-800 text-white"
+                                className="
+                                    p-3
+                                    rounded-lg
+                                    bg-slate-800
+                                    text-white
+                                    border
+                                    border-slate-700
+                                "
                             />
-
+    
                             <textarea
                                 name="description"
-                                placeholder="Description"
+                                placeholder="e.g. Latest smartphone from Apple"
                                 value={formData.description}
                                 onChange={handleChange}
-                                className="w-full p-3 rounded bg-slate-800 text-white"
+                                rows="1"
+                                className="
+                                    p-3
+                                    rounded-lg
+                                    bg-slate-800
+                                    text-white
+                                    border
+                                    border-slate-700
+                                "
                             />
-
+    
                             <input
                                 type="number"
                                 name="price"
-                                placeholder="Price"
+                                placeholder="e.g. 84999"
                                 value={formData.price}
                                 onChange={handleChange}
-                                className="w-full p-3 rounded bg-slate-800 text-white"
+                                className="
+                                    p-3
+                                    rounded-lg
+                                    bg-slate-800
+                                    text-white
+                                    border
+                                    border-slate-700
+                                "
                             />
-
-                            <div className="flex gap-2">
-
+    
                             <button
                                 type="submit"
-                                className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded text-white"
+                                className="
+                                    bg-cyan-600
+                                    hover:bg-cyan-700
+                                    rounded-lg
+                                    text-white
+                                    font-semibold
+                                "
                             >
                                 {
                                     editingId
@@ -206,137 +247,173 @@ function Products() {
                                         : "Add Product"
                                 }
                             </button>
-
-                            {
-                                editingId && (
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setEditingId(null);
-
-                                            setFormData({
-                                                name: "",
-                                                description: "",
-                                                price: ""
-                                            });
-                                        }}
-                                        className="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded text-white"
-                                    >
-                                        Cancel
-                                    </button>
-                                )
-                            }
-
-                            </div>
-
-                        </form>
-                    )
-                }
-
-            </div>
-
-
-            <div className="max-w-3xl mx-auto">
+    
+                        </div>
+    
+                        {
+                            editingId && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setEditingId(null);
+    
+                                        setFormData({
+                                            name: "",
+                                            description: "",
+                                            price: ""
+                                        });
+                                    }}
+                                    className="
+                                        mt-4
+                                        bg-gray-600
+                                        hover:bg-gray-700
+                                        px-4
+                                        py-2
+                                        rounded-lg
+                                        text-white
+                                    "
+                                >
+                                    Cancel Edit
+                                </button>
+                            )
+                        }
+    
+                    </form>
+                )
+            }
+    
+            <div className="mb-6">
+    
                 <input
                     type="text"
                     placeholder="🔍 Search Products..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(e) =>
+                        setSearchTerm(e.target.value)
+                    }
                     className="
                         w-full
                         p-3
-                        mb-6
-                        rounded
+                        rounded-lg
                         bg-slate-800
                         text-white
+                        border
+                        border-slate-700
                     "
                 />
+    
             </div>
-
-            <div className="
-                grid
-                grid-cols-1
-                md:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                gap-4
-            ">
-
+    
+            <div
+                className="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-2
+                    lg:grid-cols-3
+                    xl:grid-cols-4
+                    gap-4
+                "
+            >
+    
                 {
                     filteredProducts.map((product) => (
-
+    
                         <div
                             key={product._id}
-                            className="bg-slate-900 p-4 rounded-lg border border-slate-700"
+                            className="
+                                bg-gradient-to-br
+                                from-slate-900
+                                to-slate-950
+                                border
+                                border-slate-800
+                                rounded-xl
+                                p-4
+                                min-h-[220px]
+                                flex
+                                flex-col
+                                justify-between
+                                hover:border-cyan-700
+                                transition-all
+                            "
                         >
-
-                            <h2 className="text-xl font-bold text-white">
-                                {product.name}
-                            </h2>
-
-                            <p className="text-gray-400 mt-2">
-                                {product.description}
-                            </p>
-
-                            <p className="text-cyan-400 mt-2">
-                                ₹ {product.price}
-                            </p>
+    
+                            <div>
+    
+                                <h2 className="text-xl font-bold text-white">
+                                    {product.name}
+                                </h2>
+    
+                                <p className="text-gray-400 mt-2 text-sm">
+                                    {product.description}
+                                </p>
+    
+                                <p className="text-cyan-400 mt-4 font-semibold">
+                                    ₹ {product.price}
+                                </p>
+    
+                            </div>
+    
                             {
-                                !isAdmin && (
-                                    <button
-                                    onClick={() => handleOrderNow(product)}
-                                    className="
-                                        w-full
-                                        mt-4
-                                        bg-cyan-600
-                                        hover:bg-cyan-700
-                                        px-3
-                                        py-2
-                                        rounded
-                                        text-white
-                                    "
-                                >
-                                    Order Now
-                                </button>
-                                )
-                            }
-
-                            { 
-                                isAdmin && (
-                                    <div className="flex gap-2 mt-4">
-
+                                isAdmin ? (
+    
+                                    <div className="flex justify-end mt-6">
+    
                                         <button
-                                            onClick={() => handleEdit(product)}
-                                            className="flex-1 bg-yellow-500 hover:bg-yellow-600 px-3 py-2 rounded text-white"
-                                        >
-                                            Edit
-                                        </button>
-
-                                        <button
-                                            onClick={() => handleDelete(product._id)}
-                                            className="flex-1 bg-red-600 hover:bg-red-700 px-3 py-2 rounded text-white"
+                                            onClick={() =>
+                                                handleDelete(product._id)
+                                            }
+                                            className="
+                                                bg-red-600
+                                                hover:bg-red-700
+                                                px-3
+                                                py-1
+                                                rounded
+                                                text-white
+                                                text-sm
+                                            "
                                         >
                                             Delete
                                         </button>
-
+    
                                     </div>
+    
+                                ) : (
+    
+                                    <button
+                                        onClick={() =>
+                                            handleOrderNow(product)
+                                        }
+                                        className="
+                                            w-full
+                                            mt-6
+                                            bg-cyan-600
+                                            hover:bg-cyan-700
+                                            py-2
+                                            rounded-lg
+                                            text-white
+                                        "
+                                    >
+                                        Order Now
+                                    </button>
+    
                                 )
                             }
-
+    
                         </div>
+    
                     ))
                 }
-
-                {
-                    filteredProducts.length === 0 && (
-                        <div className="text-center text-gray-400 mt-6">
-                            No products found
-                        </div>
-                    )
-                }
-
+    
             </div>
-
+    
+            {
+                filteredProducts.length === 0 && (
+                    <div className="text-center text-gray-400 mt-8">
+                        No products found
+                    </div>
+                )
+            }
+    
         </div>
     );
 }

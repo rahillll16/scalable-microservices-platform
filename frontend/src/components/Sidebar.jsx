@@ -48,13 +48,7 @@ function Sidebar() {
                                 </NavLink>
                             </li>
 
-                            <li>
-                                <NavLink to="/products">
-                                    📦 Products
-                                </NavLink>
-                            </li>
-
-                            {!isAdmin && (
+                            { (
                                 <li>
                                     <NavLink to="/orders">
                                         🛒 Orders
@@ -63,6 +57,14 @@ function Sidebar() {
                             )}
                         </>
                     )
+                }
+
+                {
+                    <li>
+                        <NavLink to="/products">
+                            📦 Products
+                        </NavLink>
+                    </li>
                 }
 
                 </ul>

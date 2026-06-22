@@ -21,7 +21,7 @@ router.post("/", authMiddleware, adminMiddleware, createProduct);
 
 router.get("/", getAllProducts);
 
-router.get("/redis/metrics",getRedisMetrics);
+router.get("/redis/metrics",authMiddleware, getRedisMetrics);
 
 router.get("/search/:name", searchProducts);
 

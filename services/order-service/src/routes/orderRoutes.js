@@ -1,5 +1,6 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
+const adminMiddleware = require("../middlewares/adminMiddleware");
 
 const {
     createOrder,
@@ -14,15 +15,15 @@ const {
 const router = express.Router();
 
 // cicuit-breaker-status API
-router.get("/circuit-breakers", getCircuitBreaker);
+router.get("/circuit-breakers",authMiddleware, getCircuitBreaker);
 
-router.post("/", createOrder);
+router.post("/", authMiddleware, createOrder);
 
-router.get("/", getAllOrders);
+router.get("/",authMiddleware, adminMiddleware, getAllOrders);
 
-router.get("/user/:userId", getOrdersByUserId); // should be above "/:id" route
+router.get("/user/:userId", authMiddleware, getOrdersByUserId); // should be above "/:id" route
 
-router.get("/:id", getOrderById);
+router.get("/:id",authMiddleware, getOrderById);
 
 router.delete("/:id",authMiddleware, deleteOrder);
 

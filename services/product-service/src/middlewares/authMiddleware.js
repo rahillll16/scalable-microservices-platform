@@ -22,8 +22,8 @@ const authMiddleware = async (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        console.log("AUTH MIDDLEWARE HIT");
-        console.log("TOKEN USER:", decoded);
+        // console.log("AUTH MIDDLEWARE HIT");
+        // console.log("TOKEN USER:", decoded);
 
         // console.log("DECODED:", decoded);
 

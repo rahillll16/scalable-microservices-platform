@@ -20,6 +20,6 @@ router.get(
     getProfile
 ); //
 
-router.get("/:id", getUserById); //Put it after specific routes like: otherwise /profile may be interpreted as an id.
+router.get("/:id",authMiddleware, getUserById); //Put it after specific routes like: otherwise /profile may be interpreted as an id.
 
 module.exports = router;

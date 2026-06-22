@@ -1,15 +1,19 @@
 import StatusCard from "../components/StatusCard";
 import MetricPanel from "../components/MetricPanel";
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getSystemHealth } from "../services/healthService";
 import { getLoadBalancerStatus } from "../services/loadBalancerService";
 import { getCircuitBreakerStatus } from "../services/circuitBreakerService";
 import { getRedisMetrics } from "../services/productService";
 
+import finalArchitecture from "../assets/finalArchitecture.png";
+
 
 
 function Dashboard() {
+
+    const [showArchitecture, setShowArchitecture] = useState(false);
 
     const [redisMetrics, setRedisMetrics] =
     useState({
@@ -406,47 +410,41 @@ function Dashboard() {
 
                 </MetricPanel>
 
-                <MetricPanel title="🏗 Infrastructure Topology">
 
-                    <div className="flex flex-col items-center gap-6 text-white">
+                <MetricPanel title="🏗 Infrastructure Architecture">
 
-                        <div className="bg-cyan-500 px-4 py-2 rounded-lg">
-                            Client
-                        </div>
+                    <div className="relative w-full">
 
-                        <div>↓</div>
+                        <img
+                            src={finalArchitecture}
+                            alt="Microservices Architecture"
+                            className="
+                                w-full
+                                rounded-xl
+                                border
+                                border-slate-700
+                                shadow-lg
+                            "
+                        />
 
-                        <div className="bg-green-600 px-6 py-2 rounded-lg">
-                            API Gateway
-                        </div>
-
-                        <div className="flex gap-8">
-
-                            <div className="bg-blue-600 px-4 py-2 rounded-lg">
-                                Users
-                            </div>
-
-                            <div className="bg-blue-600 px-4 py-2 rounded-lg">
-                                Products
-                            </div>
-
-                            <div className="bg-blue-600 px-4 py-2 rounded-lg">
-                                Orders
-                            </div>
-
-                        </div>
-
-                        <div className="flex gap-8">
-
-                            <div className="bg-orange-600 px-4 py-2 rounded-lg">
-                                Redis
-                            </div>
-
-                            <div className="bg-purple-600 px-4 py-2 rounded-lg">
-                                MongoDB
-                            </div>
-
-                        </div>
+                        <button
+                            onClick={() => setShowArchitecture(true)}
+                            className="
+                                absolute
+                                top-3
+                                right-3
+                                bg-cyan-600
+                                hover:bg-cyan-700
+                                text-white
+                                px-3
+                                py-2
+                                rounded-lg
+                                text-sm
+                                font-semibold
+                            "
+                        >
+                            🔍 Full Screen
+                        </button>
 
                     </div>
 
@@ -454,7 +452,60 @@ function Dashboard() {
 
             </div>
 
+            {
+                showArchitecture && (
+
+                    <div
+                        className="
+                            fixed
+                            inset-0
+                            bg-black/90
+                            z-50
+                            flex
+                            items-center
+                            justify-center
+                            p-6
+                        "
+                    >
+
+                        <button
+                            onClick={() =>
+                                setShowArchitecture(false)
+                            }
+                            className="
+                                absolute
+                                top-5
+                                right-5
+                                bg-red-600
+                                hover:bg-red-700
+                                text-white
+                                px-4
+                                py-2
+                                rounded-lg
+                            "
+                        >
+                            ✕ Close
+                        </button>
+
+                        <img
+                            src={finalArchitecture}
+                            alt="Architecture"
+                            className="
+                                max-w-full
+                                max-h-full
+                                rounded-xl
+                                shadow-2xl
+                            "
+                        />
+
+                    </div>
+
+                )
+            }
+
         </div>
+
+        
     );
 }
 
