@@ -1,6 +1,7 @@
 function Navbar() {
 
     const name = localStorage.getItem("name");
+    const isLoggedIn = !!localStorage.getItem("token");
 
     const handleLogout = () => {
 
@@ -28,19 +29,21 @@ function Navbar() {
                 Welcome, {name || "User"}
             </h2>
 
-            <button
-                onClick={handleLogout}
-                className="
-                    bg-red-600
-                    hover:bg-red-700
-                    px-4
-                    py-2
-                    rounded
-                    text-white
-                "
-            >
-                Logout
-            </button>
+            { isLoggedIn && (
+                <button
+                    onClick={handleLogout}
+                    className="
+                        bg-red-600
+                        hover:bg-red-700
+                        px-4
+                        py-2
+                        rounded
+                        text-white
+                    "
+                >
+                    Logout
+                </button>
+                )}
 
         </div>
 

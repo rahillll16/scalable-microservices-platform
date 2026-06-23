@@ -1,0 +1,152 @@
+
+services:
+
+# DATABASES
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: redis
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+    - redis-data:/data
+
+
+  # USER SERVICE REPLICAS
+
+  user-service-1:
+    build: ./services/user-service
+    container_name: user-service-1
+
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+
+  user-service-2:
+    build: ./services/user-service
+    container_name: user-service-2
+
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+
+
+  # PRODUCT SERVICE REPLICAS
+
+  product-service-1:
+    build: ./services/product-service
+    container_name: product-service-1
+
+    environment:
+      PORT: 3002
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      REDIS_URI: redis://redis:6379
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+      - redis
+
+  product-service-2:
+    build: ./services/product-service
+    container_name: product-service-2
+
+    environment:
+      PORT: 3002
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      REDIS_URI: redis://redis:6379
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+      - redis
+
+
+  # ORDER SERVICE REPLICAS
+
+  order-service-1:
+    build: ./services/order-service
+    container_name: order-service-1
+
+    environment:
+      PORT: 3003
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      GATEWAY_URL: http://gateway:3000
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+
+  order-service-2:
+    build: ./services/order-service
+    container_name: order-service-2
+
+    environment:
+      PORT: 3003
+      MONGO_URI: mongodb://mongo:27017/microservices-platform
+      GATEWAY_URL: http://gateway:3000
+      JWT_SECRET: MicroservicesPlatform_2026_Secure_Key_87452
+      JWT_EXPIRES_IN: 7d
+
+    depends_on:
+      - mongo
+
+
+  # API GATEWAY
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - user-service-1
+      - user-service-2
+      - product-service-1
+      - product-service-2
+      - order-service-1
+      - order-service-2
+
+
+  # FRONT END
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - gateway
+
+volumes:
+  mongo-data:
+  redis-data:

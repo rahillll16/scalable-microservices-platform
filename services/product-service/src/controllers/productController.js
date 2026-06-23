@@ -81,7 +81,7 @@ const getAllProducts = async (req, res) => {
             "products",
             JSON.stringify(products),
             {
-                EX: 100
+                EX: 300
             }
         );
 
@@ -146,7 +146,7 @@ const getProductById = async (req, res) => {
             `product:${id}`,
             JSON.stringify(product),
             {
-                EX: 180
+                EX: 500
             }
         );
 

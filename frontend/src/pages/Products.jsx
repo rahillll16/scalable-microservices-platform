@@ -353,51 +353,64 @@ function Products() {
     
                             </div>
     
-                            {
-                                isAdmin ? (
-    
-                                    <div className="flex justify-end mt-6">
-    
-                                        <button
-                                            onClick={() =>
-                                                handleDelete(product._id)
-                                            }
-                                            className="
-                                                bg-red-600
-                                                hover:bg-red-700
-                                                px-3
-                                                py-1
-                                                rounded
-                                                text-white
-                                                text-sm
-                                            "
-                                        >
-                                            Delete
-                                        </button>
-    
-                                    </div>
-    
-                                ) : (
-    
-                                    <button
-                                        onClick={() =>
-                                            handleOrderNow(product)
-                                        }
-                                        className="
-                                            w-full
-                                            mt-6
-                                            bg-cyan-600
-                                            hover:bg-cyan-700
-                                            py-2
-                                            rounded-lg
-                                            text-white
-                                        "
-                                    >
-                                        Order Now
-                                    </button>
-    
-                                )
-                            }
+                            <div className="mt-6 space-y-3">
+
+                                <button
+                                    onClick={() => handleOrderNow(product)}
+                                    className="
+                                        w-full
+                                        bg-cyan-600
+                                        hover:bg-cyan-700
+                                        py-2
+                                        rounded-lg
+                                        text-white
+                                        font-semibold
+                                    "
+                                >
+                                    Order Now
+                                </button>
+
+                                {
+                                    isAdmin && (
+
+                                        <div className="flex gap-2">
+
+                                            <button
+                                                onClick={() => handleEdit(product)}
+                                                className="
+                                                    flex-1
+                                                    bg-yellow-500
+                                                    hover:bg-yellow-600
+                                                    py-2
+                                                    rounded-lg
+                                                    text-white
+                                                "
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(product._id)
+                                                }
+                                                className="
+                                                    flex-1
+                                                    bg-red-600
+                                                    hover:bg-red-700
+                                                    py-2
+                                                    rounded-lg
+                                                    text-white
+                                                "
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </div>
+
+                                    )
+                                }
+
+                            </div>
     
                         </div>
     

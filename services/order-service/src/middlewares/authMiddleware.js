@@ -4,7 +4,7 @@ const authMiddleware = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
-        console.log(req.headers.authorization);
+        // console.log(req.headers.authorization);
 
         if(!authHeader){
             return res.status(401).json({
@@ -24,7 +24,7 @@ const authMiddleware = async (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        console.log("DECODED:", decoded);
+        // console.log("DECODED:", decoded);
 
         req.user = decoded;
 

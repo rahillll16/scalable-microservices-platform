@@ -30,20 +30,37 @@ const loginLimiter = rateLimit({
 
 
 // SERVICE-HEALTH REGISTRY
+// const serviceHealth = {
+//     users: {
+//         "http://localhost:3001": true,
+//         "http://localhost:3004": true
+//     },
+
+//     products: {
+//         "http://localhost:3002": true,
+//         "http://localhost:3005": true
+//     },
+
+//     orders: {
+//         "http://localhost:3003": true,
+//         "http://localhost:3006": true
+//     },
+// };
+
 const serviceHealth = {
     users: {
-        "http://localhost:3001": true,
-        "http://localhost:3004": true
+        "http://user-service-1:3001": true,
+        "http://user-service-2:3001": true
     },
 
     products: {
-        "http://localhost:3002": true,
-        "http://localhost:3005": true
+        "http://product-service-1:3002": true,
+        "http://product-service-2:3002": true
     },
 
     orders: {
-        "http://localhost:3003": true,
-        "http://localhost:3006": true
+        "http://order-service-1:3003": true,
+        "http://order-service-2:3003": true
     },
 };
 

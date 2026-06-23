@@ -241,7 +241,7 @@ function Dashboard() {
                             {
                                 loadBalancer &&
                                 Object.entries(loadBalancer?.users?.instances || {})
-                                    .map(([url, healthy]) => (
+                                    .map(([url, healthy], index) => (
 
                                         <div
                                             key={url}
@@ -261,7 +261,7 @@ function Dashboard() {
                                             `}
                                         >
                                             <div>
-                                                {url.split(":").pop()}
+                                                {`User Replica ${index + 1}`}
                                             </div>
 
                                             <div className="mt-1">
@@ -299,7 +299,7 @@ function Dashboard() {
                             {
                                 loadBalancer &&
                                 Object.entries(loadBalancer?.products?.instances || {})
-                                    .map(([url, healthy]) => (
+                                    .map(([url, healthy], index) => (
 
                                         <div
                                             key={url}
@@ -319,7 +319,7 @@ function Dashboard() {
                                             `}
                                         >
                                             <div>
-                                                {url.split(":").pop()}
+                                                {`Product Replica ${index + 1}`}
                                             </div>
 
                                             <div className="mt-1">
@@ -357,7 +357,7 @@ function Dashboard() {
                             {
                                 loadBalancer &&
                                 Object.entries(loadBalancer?.orders?.instances || {})
-                                    .map(([url, healthy]) => (
+                                    .map(([url, healthy], index) => (
 
                                         <div
                                             key={url}
@@ -377,7 +377,7 @@ function Dashboard() {
                                             `}
                                         >
                                             <div>
-                                                {url.split(":").pop()}
+                                                {`Order Replica ${index + 1}`}
                                             </div>
 
                                             <div className="mt-1">

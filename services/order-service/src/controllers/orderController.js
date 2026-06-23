@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const Order = require("../models/Order");
 const mongoose = require("mongoose");
 const axios = require("axios"); // for service-to-service communication
@@ -45,6 +47,8 @@ axiosRetry(axios, {
 const createOrder = async (req, res) => {
     try {
 
+        // console.log("CREATE ORDER CONTROLLER HIT");
+
         const userId = req.user.userId;
 
         const { productId, quantity } = req.body;
@@ -88,8 +92,14 @@ const createOrder = async (req, res) => {
 
         try {
 
+            // console.log("Gateway URL:", process.env.GATEWAY_URL);
+            // console.log("User ID:", userId);
+            // console.log(
+            //     `${process.env.GATEWAY_URL}/users/${userId}`
+            // );
+
             await axios.get(
-                `http://localhost:3000/users/${userId}`,
+                `${process.env.GATEWAY_URL}/users/${userId}`,
                 {
                     headers: {
                         Authorization: req.headers.authorization // user/:id is protected bu auth
@@ -120,7 +130,12 @@ const createOrder = async (req, res) => {
         try {
 
             await axios.get(
-                `http://localhost:3000/products/${productId}`
+                `${process.env.GATEWAY_URL}/products/${productId}`,
+                {
+                    headers: {
+                        Authorization: req.headers.authorization // user/:id is protected bu auth
+                    }
+                }
             );
         
             productBreaker.recordSuccess();
