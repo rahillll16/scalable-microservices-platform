@@ -165,6 +165,22 @@ function Sidebar() {
 
             </nav>
 
+            {/* Footer */}
+
+            <div className="
+                p-4
+                border-t
+                border-slate-800
+                text-center
+            ">
+                <p className="
+                    text-sm
+                    text-slate-500
+                ">
+                    © 2026 R Rahil
+                </p>
+            </div>
+
         </aside>
     );
 }
