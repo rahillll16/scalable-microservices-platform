@@ -30,6 +30,9 @@ const loginLimiter = rateLimit({
 
 
 // SERVICE-HEALTH REGISTRY
+
+// for system
+
 // const serviceHealth = {
 //     users: {
 //         "http://localhost:3001": true,
@@ -47,20 +50,38 @@ const loginLimiter = rateLimit({
 //     },
 // };
 
+// for docker
+
+// const serviceHealth = {
+//     users: {
+//         "http://user-service-1:3001": true,
+//         "http://user-service-2:3001": true
+//     },
+
+//     products: {
+//         "http://product-service-1:3002": true,
+//         "http://product-service-2:3002": true
+//     },
+
+//     orders: {
+//         "http://order-service-1:3003": true,
+//         "http://order-service-2:3003": true
+//     },
+// };
+
+// for render
+
 const serviceHealth = {
     users: {
-        "http://user-service-1:3001": true,
-        "http://user-service-2:3001": true
+        "https://user-service-qxbu.onrender.com/": true,
     },
 
     products: {
-        "http://product-service-1:3002": true,
-        "http://product-service-2:3002": true
+        "https://scalable-microservices-platform.onrender.com": true
     },
 
     orders: {
-        "http://order-service-1:3003": true,
-        "http://order-service-2:3003": true
+        "https://order-service-s7gw.onrender.com": true
     },
 };
 
