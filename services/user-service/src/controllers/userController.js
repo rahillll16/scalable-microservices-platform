@@ -47,7 +47,9 @@ const loginUser = async (req,res) => {
                 expiresIn: process.env.JWT_EXPIRES_IN
             }
         );
-        console.log("ROLE:", user.role);
+        // console.log("ROLE:", user.role);
+
+
         res.status(200).json({
             success: true,
             token,
