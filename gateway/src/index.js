@@ -74,14 +74,17 @@ const loginLimiter = rateLimit({
 const serviceHealth = {
     users: {
         "https://user-service-qxbu.onrender.com": true,
+        "https://user-service2-qxbu.onrender.com": true
     },
 
     products: {
-        "https://scalable-microservices-platform.onrender.com": true
+        "https://scalable-microservices-platform.onrender.com": true,
+        "https://scalable-microservices2-platform.onrender.com": true
     },
 
     orders: {
-        "https://order-service-s7gw.onrender.com": true
+        "https://order-service-s7gw.onrender.com": true,
+        "https://order-service2-s7gw.onrender.com": true
     },
 };
 
