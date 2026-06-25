@@ -1,0 +1,82 @@
+
+name: Microservices CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # FRONTEND
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      # GATEWAY
+
+      - name: Install Gateway Dependencies
+        working-directory: ./gateway
+        run: npm install
+
+      # USER SERVICE
+
+      - name: Install User Service Dependencies
+        working-directory: ./services/user-service
+        run: npm install
+
+      # PRODUCT SERVICE
+
+      - name: Install Product Service Dependencies
+        working-directory: ./services/product-service
+        run: npm install
+
+      # ORDER SERVICE
+
+      - name: Install Order Service Dependencies
+        working-directory: ./services/order-service
+        run: npm install
+
+      # DOCKER BUILDS
+
+      - name: Build Gateway Docker Image
+        run: docker build -t gateway ./gateway
+
+      - name: Build User Service Docker Image
+        run: docker build -t user-service ./services/user-service
+
+      - name: Build Product Service Docker Image
+        run: docker build -t product-service ./services/product-service
+
+      - name: Build Order Service Docker Image
+        run: docker build -t order-service ./services/order-service
+
+      - name: Build Frontend Docker Image
+        run: docker build -t frontend ./frontend
+
+      
+      - name: Validate Docker Compose
+        run: docker compose config
