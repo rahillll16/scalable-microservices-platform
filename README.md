@@ -75,6 +75,38 @@ A <b>Cloud-Native Scalable Microservices Platform</b> built using <b>Node.js, Ex
 
 # 📸 Application Screenshots
 
+## 📊 Monitoring Dashboard
+
+<p align="center">
+<img src="./assets/dashboard.png" width="100%">
+</p>
+
+---
+
+## ⚡ Redis Analytics
+
+<p align="center">
+<img src="./assets/redis-analytics.png" width="60%">
+</p>
+
+---
+
+## 🛡️ Circuit Breaker Monitoring
+
+<p align="center">
+<img src="./assets/circuit-breakers.png" width="60%">
+</p>
+
+---
+
+## ⚖️ Load Balancer Dashboard
+
+<p align="center">
+<img src="./assets/load-balancer.png" width="60%">
+</p>
+
+---
+
 ## 🔐 Authentication
 
 ### Login Page
@@ -105,38 +137,6 @@ A <b>Cloud-Native Scalable Microservices Platform</b> built using <b>Node.js, Ex
 
 <p align="center">
 <img src="./assets/orders.png" width="100%">
-</p>
-
----
-
-## 📊 Monitoring Dashboard
-
-<p align="center">
-<img src="./assets/dashboard.png" width="100%">
-</p>
-
----
-
-## ⚡ Redis Analytics
-
-<p align="center">
-<img src="./assets/redis-analytics.png" width="60%">
-</p>
-
----
-
-## 🛡️ Circuit Breaker Monitoring
-
-<p align="center">
-<img src="./assets/circuit-breakers.png" width="60%">
-</p>
-
----
-
-## ⚖️ Load Balancer Dashboard
-
-<p align="center">
-<img src="./assets/load-balancer.png" width="60%">
 </p>
 
 ---
