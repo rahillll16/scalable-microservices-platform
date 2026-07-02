@@ -1,80 +1,107 @@
 
-function MetricPanel({ title, children }) {
+function StatusCard({ title, value }) {
+    const isUp = value === "UP";
+
     return (
         <div
-            className="
+            className={`
                 relative
                 overflow-hidden
                 rounded-3xl
-                border
-                border-slate-700/40
-                bg-white/5
-                backdrop-blur-xl
                 p-6
-
+                border
+                backdrop-blur-xl
                 transition-all
                 duration-500
-
                 hover:-translate-y-2
-                hover:border-cyan-400/50
-                hover:shadow-[0_0_40px_rgba(34,211,238,0.18)]
-            "
+                hover:scale-[1.02]
+                cursor-pointer
+                group
+
+                ${
+                    isUp
+                        ? `
+                            border-green-500/30
+                            bg-green-500/5
+                            hover:shadow-[0_0_35px_rgba(34,197,94,0.35)]
+                          `
+                        : `
+                            border-red-500/30
+                            bg-red-500/5
+                            hover:shadow-[0_0_35px_rgba(239,68,68,0.35)]
+                          `
+                }
+            `}
         >
-            {/* Decorative Gradient */}
+            {/* Background Glow */}
             <div
-                className="
+                className={`
                     absolute
                     inset-0
-                    bg-gradient-to-br
-                    from-cyan-500/5
-                    via-transparent
-                    to-purple-500/5
-                    pointer-events-none
-                "
-            />
+                    opacity-40
+                    transition-all
+                    duration-500
+                    group-hover:opacity-70
 
-            {/* Top Accent Line */}
-            <div
-                className="
-                    absolute
-                    top-0
-                    left-0
-                    w-full
-                    h-[2px]
-                    bg-gradient-to-r
-                    from-cyan-400
-                    via-blue-500
-                    to-purple-500
-                "
+                    ${
+                        isUp
+                            ? "bg-gradient-to-br from-green-500/10 to-emerald-500/5"
+                            : "bg-gradient-to-br from-red-500/10 to-rose-500/5"
+                    }
+                `}
             />
 
             {/* Title */}
-            <h2
-                className="
-                    relative
-                    z-10
-
-                    text-2xl
-                    font-bold
-
-                    text-transparent
-                    bg-clip-text
-                    bg-gradient-to-r
-                    from-cyan-300
-                    to-blue-400
-
-                    mb-6
-                "
-            >
-                {title}
-            </h2>
-
-            {/* Content */}
             <div className="relative z-10">
-                {children}
+                <h3
+                    className="
+                        text-slate-400
+                        uppercase
+                        tracking-widest
+                        text-xs
+                        font-semibold
+                    "
+                >
+                    {title}
+                </h3>
+
+                {/* Status */}
+                <div className="mt-5 flex items-center justify-center gap-3">
+
+                    <span
+                        className={`
+                            w-3
+                            h-3
+                            rounded-full
+                            animate-pulse
+
+                            ${
+                                isUp
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                            }
+                        `}
+                    />
+
+                    <p
+                        className={`
+                            text-3xl
+                            font-extrabold
+
+                            ${
+                                isUp
+                                    ? "text-green-400"
+                                    : "text-red-400"
+                            }
+                        `}
+                    >
+                        {value}
+                    </p>
+
+                </div>
             </div>
         </div>
     );
 }
 
-export default MetricPanel;
+export default StatusCard;
