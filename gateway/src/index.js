@@ -75,22 +75,22 @@ const serviceHealth = {
     users: {
         "https://user-service-qxbu.onrender.com": true,
         "https://user-service2-qxbu.onrender.com": true,
-        "https://user-service-qxbu.onrender.com": true,
-        "https://user-service2-qxbu.onrender.com": true
+        "https://user-service3-qxbu.onrender.com": true,
+        "https://user-service4-qxbu.onrender.com": true
     },
 
     products: {
         "https://scalable-microservices-platform.onrender.com": true,
         "https://scalable-microservices2-platform.onrender.com": true,
-        "https://scalable-microservices-platform.onrender.com": true,
-        "https://scalable-microservices2-platform.onrender.com": true
+        "https://scalable-microservices3-platform.onrender.com": true,
+        "https://scalable-microservices4-platform.onrender.com": true
     },
 
     orders: {
         "https://order-service-s7gw.onrender.com": true,
         "https://order-service2-s7gw.onrender.com": true,
-        "https://order-service-s7gw.onrender.com": true,
-        "https://order-service2-s7gw.onrender.com": true,
+        "https://order-service3-s7gw.onrender.com": true,
+        "https://order-service4-s7gw.onrender.com": true,
     },
 };
 
