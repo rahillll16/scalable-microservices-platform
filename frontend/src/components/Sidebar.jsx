@@ -49,9 +49,9 @@ function Sidebar() {
                     Microservices
                 </h1>
 
-                <p className="text-slate-400 text-sm mt-1">
+                {/* <p className="text-slate-400 text-sm mt-1">
                     Platform Dashboard
-                </p>
+                </p> */}
 
             </div>
 
@@ -94,13 +94,7 @@ function Sidebar() {
                                         Login
                                     </NavLink>
                                 </li>
-                            </>
-                        )
-                    }
 
-                    {
-                        isLoggedIn && (
-                            <>
                                 <li>
                                     <NavLink
                                         to="/"
@@ -110,6 +104,22 @@ function Sidebar() {
                                         Dashboard
                                     </NavLink>
                                 </li>
+                            </>
+                        )
+                    }
+
+                    {
+                        isLoggedIn && (
+                            <>
+                                {/* <li>
+                                    <NavLink
+                                        to="/"
+                                        className={navClass}
+                                    >
+                                        <span>📊</span>
+                                        Dashboard
+                                    </NavLink>
+                                </li> */}
 
                                 <li>
                                     <NavLink
