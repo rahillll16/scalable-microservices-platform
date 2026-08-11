@@ -94,16 +94,6 @@ function Sidebar() {
                                         Login
                                     </NavLink>
                                 </li>
-
-                                <li>
-                                    <NavLink
-                                        to="/"
-                                        className={navClass}
-                                    >
-                                        <span>📊</span>
-                                        Dashboard
-                                    </NavLink>
-                                </li>
                             </>
                         )
                     }
@@ -141,6 +131,16 @@ function Sidebar() {
                         >
                             <span>📦</span>
                             Products
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink
+                            to="/"
+                            className={navClass}
+                        >
+                            <span>📊</span>
+                                Dashboard
                         </NavLink>
                     </li>
 
