@@ -119,7 +119,7 @@ const getProductById = async (req, res) => {
         if(cachedProduct) {
             console.log("CACHE HIT");
 
-            await redisClient.incr("redis:misses");
+            await redisClient.incr("redis:hits");
 
             const product = JSON.parse(cachedProduct);
 
